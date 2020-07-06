@@ -2,9 +2,11 @@ package daniillnull.collada;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
 import java.util.List;
 
+@XmlType(propOrder = {"contributor", "created", "modified"})
 public class ColladaAsset {
 	@XmlElement(required = true)
 	@XmlSchemaType(name = "dateTime")

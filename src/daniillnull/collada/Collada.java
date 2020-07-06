@@ -9,15 +9,13 @@ import daniillnull.collada.material.ColladaMaterial;
 import daniillnull.collada.node.ColladaVisualScene;
 import daniillnull.collada.scene.ColladaScene;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 @XmlRootElement(name = "COLLADA")
+@XmlType(propOrder = {"asset", "libraryEffects", "libraryMaterials", "libraryControllers", "libraryCameras", "libraryGeometries", "libraryAnimations", "libraryVisualScenes", "scene"})
 public class Collada {
 	@XmlElementWrapper(name = "library_controllers")
 	@XmlElement(name = "controller")

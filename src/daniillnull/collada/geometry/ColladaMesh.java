@@ -5,9 +5,11 @@ import daniillnull.collada.source.ColladaSource;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlType(propOrder = {"sources", "vertices", "primitivesList"})
 public class ColladaMesh {
 	@XmlElement(name = "source")
 	public final List<ColladaSource> sources;

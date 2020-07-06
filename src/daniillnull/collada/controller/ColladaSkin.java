@@ -5,14 +5,12 @@ import daniillnull.collada.misc.ColladaInput;
 import daniillnull.collada.source.ColladaSource;
 import daniillnull.collada.xml_adapters.IDRefAdapter;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlType(propOrder = {"bindShapeMatrix", "sources", "jointsInputs", "vertexWeights"})
 public class ColladaSkin {
 	@XmlElement(name = "source")
 	public final List<ColladaSource> sources;
@@ -20,7 +18,6 @@ public class ColladaSkin {
 	@XmlElement(name = "input")
 	public final List<ColladaInput> jointsInputs;
 	@XmlElement(name = "bind_shape_matrix")
-	// @XmlJavaTypeAdapter(FloatsAdapter.class)
 	@XmlList
 	public float[] bindShapeMatrix;
 	@XmlElement(name = "vertex_weights", required = true)

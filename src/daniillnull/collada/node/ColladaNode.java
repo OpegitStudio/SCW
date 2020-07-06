@@ -7,13 +7,11 @@ import daniillnull.collada.instance.ColladaControllerInstance;
 import daniillnull.collada.instance.ColladaGeometryInstance;
 import daniillnull.collada.instance.ColladaInstance;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlType(propOrder = {"matrix", "rotate", "translate", "scale", "instances", "children"})
 public class ColladaNode extends ColladaBaseObject {
 	@XmlElement(name = "node")
 	public final List<ColladaNode> children;
