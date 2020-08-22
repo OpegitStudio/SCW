@@ -11,9 +11,9 @@ import daniillnull.scw.util.ScwOutputStream;
 import java.io.IOException;
 
 public class ScwMaterial extends ScwSection {
-	public String name, shaderPath, unknownS3, unknownS4, unknownS5, diffuseLightmap, specularLightmap, diffuseTexPath, unkTexPath, unknownPS3, unknownPS4;
+	public String name, shaderPath, unknownS3, unknownS4, opacityTexPath, unknownS6, diffuseLightmap, specularLightmap, diffuseTexPath, specularTexPath, colorizeTexPath, emissionTexPath;
 	public int unknownB1, unknownB2;
-	public int unknownI1, unknownI2, unknownI3, diffuseColor, unkColor, unknownPI3, unknownPI4;
+	public int ambientColor, shaderDefineFlags, diffuseColor, specularColor, colorizeColor, emissionColor;
 	public float unknownF1, unknownF2;
 
 	public ScwMaterial() {
@@ -29,36 +29,38 @@ public class ScwMaterial extends ScwSection {
 		shaderPath = is.readUTF();
 		unknownB1 = is.readUnsignedByte();
 		unknownB2 = is.readUnsignedByte();
-		unknownI1 = is.readInt();
+		ambientColor = is.readInt();
 		if (is.readBoolean()) {
 			diffuseTexPath = is.readUTF();
 		} else {
 			diffuseColor = is.readInt();
 		}
 		if (is.readBoolean()) {
-			unkTexPath = is.readUTF();
+			specularTexPath = is.readUTF();
 		} else {
-			unkColor = is.readInt();
+			specularColor = is.readInt();
 		}
 		unknownS3 = is.readUTF();
 		unknownS4 = is.readUTF();
 		if (is.readBoolean()) {
-			unknownPS3 = is.readUTF();
+			colorizeTexPath = is.readUTF();
 		} else {
-			unknownPI3 = is.readInt();
+			colorizeColor = is.readInt();
 		}
 		if (is.readBoolean()) {
-			unknownPS4 = is.readUTF();
+			emissionTexPath = is.readUTF();
 		} else {
-			unknownPI4 = is.readInt();
+			emissionColor = is.readInt();
 		}
-		unknownS5 = is.readUTF();
+		opacityTexPath = is.readUTF();
 		unknownF1 = is.readFloat();
 		unknownF2 = is.readFloat();
 		diffuseLightmap = is.readUTF();
 		specularLightmap = is.readUTF();
-		unknownI2 = is.readInt();
-		unknownI3 = is.readUnsignedShort();
+		if (is.getConfig().version >= 2) {
+			unknownS6 = is.readUTF();
+		}
+		shaderDefineFlags = is.readInt();
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class ScwMaterial extends ScwSection {
 		os.writeUTF(shaderPath);
 		os.write(unknownB1);
 		os.write(unknownB2);
-		os.writeInt(unknownI1);
+		os.writeInt(ambientColor);
 		if (diffuseTexPath != null) {
 			os.writeBoolean(true);
 			os.writeUTF(diffuseTexPath);
@@ -75,36 +77,38 @@ public class ScwMaterial extends ScwSection {
 			os.writeBoolean(false);
 			os.writeInt(diffuseColor);
 		}
-		if (unkTexPath != null) {
+		if (specularTexPath != null) {
 			os.writeBoolean(true);
-			os.writeUTF(unkTexPath);
+			os.writeUTF(specularTexPath);
 		} else {
 			os.writeBoolean(false);
-			os.writeInt(unkColor);
+			os.writeInt(specularColor);
 		}
 		os.writeUTF(unknownS3);
 		os.writeUTF(unknownS4);
-		if (unknownPS3 != null) {
+		if (colorizeTexPath != null) {
 			os.writeBoolean(true);
-			os.writeUTF(unknownPS3);
+			os.writeUTF(colorizeTexPath);
 		} else {
 			os.writeBoolean(false);
-			os.writeInt(unknownPI3);
+			os.writeInt(colorizeColor);
 		}
-		if (unknownPS4 != null) {
+		if (emissionTexPath != null) {
 			os.writeBoolean(true);
-			os.writeUTF(unknownPS4);
+			os.writeUTF(emissionTexPath);
 		} else {
 			os.writeBoolean(false);
-			os.writeInt(unknownPI4);
+			os.writeInt(emissionColor);
 		}
-		os.writeUTF(unknownS5);
+		os.writeUTF(opacityTexPath);
 		os.writeFloat(unknownF1);
 		os.writeFloat(unknownF2);
 		os.writeUTF(diffuseLightmap);
 		os.writeUTF(specularLightmap);
-		os.writeInt(unknownI2);
-		os.writeShort(unknownI3);
+		if (os.getConfig().version >= 2) {
+			os.writeUTF(unknownS6);
+		}
+		os.writeInt(shaderDefineFlags);
 	}
 
 	@Override
@@ -119,22 +123,21 @@ public class ScwMaterial extends ScwSection {
 				",\nshaderPath='" + shaderPath + '\'' +
 				",\nunknownS3='" + unknownS3 + '\'' +
 				",\nunknownS4='" + unknownS4 + '\'' +
-				",\nunknownS5='" + unknownS5 + '\'' +
+				",\nopacityTexPath='" + opacityTexPath + '\'' +
 				",\ndiffuseLightmap='" + diffuseLightmap + '\'' +
 				",\nspecularLightmap='" + specularLightmap + '\'' +
 				",\ndiffuseTexPath='" + diffuseTexPath + '\'' +
-				",\nunkTexPath='" + unkTexPath + '\'' +
-				",\nunknownPS3='" + unknownPS3 + '\'' +
-				",\nunknownPS4='" + unknownPS4 + '\'' +
+				",\nspecularTexPath='" + specularTexPath + '\'' +
+				",\ncolorizeTexPath='" + colorizeTexPath + '\'' +
+				",\nemissionTexPath='" + emissionTexPath + '\'' +
 				",\nunknownB1=" + unknownB1 +
 				",\nunknownB2=" + unknownB2 +
-				",\nunknownI1=" + unknownI1 +
-				",\nunknownI2=" + unknownI2 +
-				",\nunknownI3=" + unknownI3 +
+				",\nambientColor=" + ambientColor +
+				",\nshaderDefineFlags=" + shaderDefineFlags +
 				",\ndiffuseColor=" + diffuseColor +
-				",\nunkColor=" + unkColor +
-				",\nunknownPI3=" + unknownPI3 +
-				",\nunknownPI4=" + unknownPI4 +
+				",\nspecularColor=" + specularColor +
+				",\ncolorizeColor=" + colorizeColor +
+				",\nemissionColor=" + emissionColor +
 				",\nunknownF1=" + unknownF1 +
 				",\nunknownF2=" + unknownF2 +
 				'}';
@@ -151,20 +154,21 @@ public class ScwMaterial extends ScwSection {
 		shaderPath = "shader/uber.vsh";
 		unknownS3 = ".";
 		unknownS4 = "";
-		unknownS5 = "";
+		opacityTexPath = "";
+		unknownS6 = "";
 		diffuseLightmap = "sc3d/diffuse_lightmap.png";
 		specularLightmap = "sc3d/specular_lightmap.png";
 		unknownB1 = 4;
-		unknownI1 = 0xFF000000;
+		ambientColor = 0xFF000000;
 
 		// diffuseColor = 0xFF00FF00;
-		// unkColor = 0xFF000000;
+		// specularColor = 0xFF000000;
 		diffuseTexPath = ".";
-		unkTexPath = ".";
+		specularTexPath = ".";
 
-		unknownPI3 = 0xFFFFFFFF;
-		unknownPI4 = 0xFF000000;
+		colorizeColor = 0xFFFFFFFF;
+		emissionColor = 0xFF000000;
 		unknownF1 = 1.0f;
-		unknownI3 = 3014;
+		shaderDefineFlags = 3014; // 1 is for AMBIENT, 2 is for DIFFUSE, 4 is for STENCIL, etc.
 	}
 }
